@@ -21,7 +21,7 @@ $(HEX_FILE): $(ELF_FILE)
 	avr-objcopy -j .text -j .data -O ihex $< $@
 
 flash: $(HEX_FILE)
-	sudo avrdude -v -c usbtiny -p attiny84 -U flash:w:$<
+	sudo avrdude -v -c usbtiny -p attiny84 -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m -U flash:w:$<
 
 size: $(ELF_FILE)
 	avr-size -Cx --mcu attiny84 $(ELF_FILE)
