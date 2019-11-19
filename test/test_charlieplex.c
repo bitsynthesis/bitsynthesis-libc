@@ -25,8 +25,8 @@ TEST(charlieplex_tests, test_charlieplex_step) {
   uint8_t dummy_values[6] = {3, 2, 1, 0, 1, 2};
   CharliePlex dummy_cp = charlieplex_new(6, 3, &dummy_values[0]);
 
-  uint8_t expected_led_index[26] = {
-    0, 0,
+  uint8_t expected_led_index[27] = {
+    0, 0, 0,
     1, 1, 1,
     2, 2, 2,
     3, 3, 3,
@@ -37,8 +37,8 @@ TEST(charlieplex_tests, test_charlieplex_step) {
     2, 2, 2
   };
 
-  uint8_t expected_led_active[26] = {
-    true, true,
+  uint8_t expected_led_active[27] = {
+    true, true, true,
     true, true, false,
     true, false, false,
     false, false, false,
@@ -49,13 +49,26 @@ TEST(charlieplex_tests, test_charlieplex_step) {
     true, false, false
   };
 
-  char msg[50];
-  for(uint8_t i = 0; i < 26; i++) {
-    charlieplex_step(&dummy_cp);
+  uint8_t expected_status[27] = {
+    3, 0, 0,
+    2, 0, 1,
+    3, 1, 0,
+    2, 0, 0,
+    3, 1, 0,
+    3, 0, 1,
+    3, 0, 0,
+    2, 0, 1,
+    3, 1, 0
+  };
 
+  char msg[50];
+  for(uint8_t i = 0; i < 27; i++) {
     sprintf(msg, "Failed iteration %i", i);
     TEST_ASSERT_EQUAL_MESSAGE(expected_led_index[i], dummy_cp.led_index, msg);
     TEST_ASSERT_EQUAL_MESSAGE(expected_led_active[i], dummy_cp.led_active, msg);
+    TEST_ASSERT_EQUAL_MESSAGE(expected_status[i], dummy_cp.status, msg);
+
+    charlieplex_step(&dummy_cp);
   }
 }
 

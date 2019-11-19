@@ -4,6 +4,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef enum {
+  CHARLIEPLEX_CHANGE_LED_ACTIVE,
+  CHARLIEPLEX_CHANGE_LED_INDEX
+} CharliePlexStatus;
+
 // Represents a single chain of charlieplexed LEDs.
 // If RGB done in serial, use one. If in parallel, use three.
 typedef volatile struct CharliePlex {
@@ -11,6 +16,7 @@ typedef volatile struct CharliePlex {
   uint8_t led_count;
   uint8_t led_index;
   uint8_t *led_values;
+  uint8_t status;
   uint8_t value_count;
   uint8_t value_index;
 } CharliePlex;
